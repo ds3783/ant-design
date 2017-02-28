@@ -1,5 +1,5 @@
 import React from 'react';
-import RcTable from 'rc-table';
+import RcTable from 'nestia-rc-table';
 
 export interface ColumnProps<T> {
   title?: React.ReactNode;

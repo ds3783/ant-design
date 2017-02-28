@@ -1,5 +1,5 @@
 import React from 'react';
-import RcTable from 'rc-table';
+import RcTable from 'nestia-rc-table';
 import FilterDropdown from './filterDropdown';
 import Pagination, { PaginationProps } from '../pagination';
 import Icon from '../icon';
