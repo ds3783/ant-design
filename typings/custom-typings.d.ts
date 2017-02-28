@@ -66,7 +66,7 @@ declare module 'rc-steps';
 
 declare module 'rc-switch';
 
-declare module 'rc-table';
+declare module 'nestia-rc-table';
 
 declare module 'rc-tree-select';
 
