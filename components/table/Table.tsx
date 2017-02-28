@@ -336,7 +336,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
     };
   }
 
-  toggleSortOrder(order, column) {
+  toggleSortOrder(order, column, evt) {
     let { sortColumn, sortOrder } = this.state;
     // 只同时允许一列进行排序，否则会导致排序顺序的逻辑问题
     let isSortColumn = this.isSortColumn(column);
@@ -363,7 +363,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
 
     const onChange = this.props.onChange;
     if (onChange) {
-      onChange.apply(null, this.prepareParamsArguments(assign({}, this.state, newState)));
+      onChange.apply(null, this.prepareParamsArguments(assign({}, this.state, newState), evt));
     }
   }
 
@@ -425,7 +425,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
           selectionDirty: false,
           filters,
           pagination,
-        })));
+        }), null));
       }
     });
   }
@@ -532,7 +532,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
       onChange.apply(null, this.prepareParamsArguments(assign({}, this.state, {
         selectionDirty: false,
         pagination,
-      })));
+      }), null));
     }
   }
 
@@ -668,14 +668,14 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
             <span
               className={`${prefixCls}-column-sorter-up ${isAscend ? 'on' : 'off'}`}
               title="↑"
-              onClick={() => this.toggleSortOrder('ascend', column)}
+              onClick={(evt) => {stopPropagation(evt);this.toggleSortOrder('ascend', column, evt);}}
             >
               <Icon type="caret-up" />
             </span>
             <span
               className={`${prefixCls}-column-sorter-down ${isDescend ? 'on' : 'off'}`}
               title="↓"
-              onClick={() => this.toggleSortOrder('descend', column)}
+              onClick={(evt) => {stopPropagation(evt);this.toggleSortOrder('descend', column, evt);}}
             >
               <Icon type="caret-down" />
             </span>
@@ -703,7 +703,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
     if (onChange) {
       onChange.apply(null, this.prepareParamsArguments(assign({}, this.state, {
         pagination: nextPagination,
-      })));
+      }), null));
     }
   }
 
@@ -734,7 +734,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
   }
 
   // Get pagination, filters, sorter
-  prepareParamsArguments(state: any): [any, string[], Object] {
+  prepareParamsArguments(state: any, evt: any): [any, string[], Object] {
     const pagination = { ...state.pagination };
     // remove useless handle function in Table.onChange
     delete pagination.onChange;
@@ -747,7 +747,7 @@ export default class Table<T> extends React.Component<TableProps<T>, any> {
       sorter.field = state.sortColumn.dataIndex;
       sorter.columnKey = this.getColumnKey(state.sortColumn);
     }
-    return [pagination, filters, sorter];
+    return [pagination, filters, sorter, evt];
   }
 
   findColumn(myKey) {
